@@ -34,15 +34,15 @@ for i=1:num_folds
     
     if method == "Euclidean"
         M = eye(dim);
-        divs = mahalanobis(X_test, X_train, M);
+        divs = mahalanobis(X_test, X_train, M, "all");
     elseif method == "ITML"
         M = feval(tCL, y_train, X_train);
-        divs = mahalanobis(X_test, X_train, M);
+        divs = mahalanobis(X_test, X_train, M, "all");
     elseif method == "NBDL"
         m = 1000;
         [S1, S2, S3, S4] = get_supervision_pairs(m, y_train);
         params = NBDL(X_train, S1, S2, S3, S4);
-        divs = max_affine_bregman(X_test, X_train, params);
+        divs = max_affine_bregman(X_test, X_train, params, "all");
     end
     
     pred(test_start:test_end) = divergence_knn(y_train, divs, knn_size);

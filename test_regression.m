@@ -7,10 +7,10 @@ dset = 'unit_box';
 % breg = 'Mahal';
 breg = 'GID';
 method = 'NBR';
-method = 'MR';
-method = 'MLP';
+% method = 'MR';
+% method = 'MLP';
 L = 10^10;
-max_n = 100;
+max_n = 50;
 n_test = 1000;
 sigma = 0.05;
 dim = 1;
@@ -65,10 +65,10 @@ for run=1:num_run
             case "NBR"
                 out = NBR(y, X, S1, S2, L);
                 params = out{1};
-                bregman_div = @(X1,X2)max_affine_bregman_notall(X1,X2,params);
+                bregman_div = @(X1,X2)max_affine_bregman(X1,X2,params,'not');
             case "MR"
                 A = MR(y, X, S1, S2);
-                bregman_div =  @(X1,X2)mahalanobis_notall(X1,X2,A);
+                bregman_div =  @(X1,X2)mahalanobis(X1,X2,A,'not');
             case "MLP"
                 hiddenLayerSize = 5;
                 net = fitnet(hiddenLayerSize);
