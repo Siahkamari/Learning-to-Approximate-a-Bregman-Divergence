@@ -3,19 +3,20 @@ rng(0);
 
 %% experiment setting
 dset = 'unit_box';
-% breg = 'ItSa';
+breg = 'ItSa';
 % breg = 'Mahal';
-breg = 'GID';
-method = 'NBR';
+% breg = 'GID';
+% method = 'NBR';
 % method = 'MR';
-% method = 'MLP';
-L = 10^10;
-max_n = 50;
+method = 'MLP';
+L = 100;
+min_n = 5;
+max_n = 100;
 n_test = 1000;
 sigma = 0.05;
-dim = 1;
-num_run = 1;
-n_array = 10:5:max_n;
+dim = 2;
+num_run = 20;
+n_array = (min_n:5:max_n);
 
 %% running
 err = zeros(length(n_array),num_run);
@@ -39,8 +40,8 @@ for run=1:num_run
             Ey = it_sa_dist(X(S1,:),X(S2,:));
         case 'Mahal'
             A = eye(dim) + 0.5*ones(dim);
-            Ey_test = mahalanobis_notall(X_test(S1_test,:), X_test(S2_test,:), A);
-            Ey = mahalanobis_notall(X(S1,:), X(S2,:), A);
+            Ey_test = mahalanobis(X_test(S1_test,:), X_test(S2_test,:), A);
+            Ey = mahalanobis(X(S1,:), X(S2,:), A);
         case 'GID'
             Ey_test = general_i_div(X_test(S1_test,:), X_test(S2_test,:));
             Ey = general_i_div(X(S1,:), X(S2,:));
@@ -65,12 +66,12 @@ for run=1:num_run
             case "NBR"
                 out = NBR(y, X, S1, S2, L);
                 params = out{1};
-                bregman_div = @(X1,X2)max_affine_bregman(X1,X2,params,'not');
+                bregman_div = @(X1,X2)max_affine_bregman(X1,X2,params);
             case "MR"
                 A = MR(y, X, S1, S2);
-                bregman_div =  @(X1,X2)mahalanobis(X1,X2,A,'not');
+                bregman_div =  @(X1,X2)mahalanobis(X1,X2,A);
             case "MLP"
-                hiddenLayerSize = 5;
+                hiddenLayerSize = 10;
                 net = fitnet(hiddenLayerSize);
                 net.divideParam.trainRatio = 80/100;
                 net.divideParam.valRatio = 20/100;
@@ -83,20 +84,44 @@ for run=1:num_run
         err(counter,run) = 1/n_test^2 * norm(y_hat-Ey_test)^2;
     end
 end
-h = plot(n_array,mean(err,2)); hold on
-h.LineWidth = 2;
-legend( "Bregman regression","Mahalanobis regression", "MlP regression")
+
+% save('NBR_mahal.mat','err')
+
+n_array = n_array';
+
+%% Plotting
+figure('Position', [0 0 350 300]);  hold on
+e = std(err,0,2)/sqrt(num_run);
+lo = max(0,mean(err,2) - 2*e);
+hi = mean(err,2) + 2*e;
+hp = patch([n_array; n_array(end:-1:1);n_array(1)], [lo; hi(end:-1:1); lo(1)], 'b');
+alpha(0.8);
+hl = plot(n_array,mean(err,2));
+hl.LineWidth = 2;
+set(hp, 'facecolor', [0.8 0.8 1], 'edgecolor', 'none');
+set(hl, 'color', 'b');
 xlabel("number of data points")
-ylabel('E \|D_{\phi _n}- D_{\phi_*} \|')
+xlim([min_n,max_n])
+ylabel('$ E \|D_{\phi_n}(x_1,x_2)- D_{\phi_*}(x_1,x_2) \|_2^2$','Interpreter','latex', 'FontSize',12)
 switch breg
     case 'ItSa'
         title('Itakura-Saito distance')
     case 'Mahal'
         title('Mahalanobis distance')
     case 'GID'
-        title('General I divergence')   
+        title('Generalized I-divergence')   
+end
+switch method
+    case 'NBR'
+        legend('Bregman regression')
+    case 'MR'
+        legend('Mahalanobis regression')
+    case 'MLP'
+        legend('MLP regression')   
 end
 
+
+%% local functions
 function y = it_sa_dist(X1,X2)
 y = sum(X1./X2 -log(X1./X2)-1,2);
 end

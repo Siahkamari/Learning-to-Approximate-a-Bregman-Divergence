@@ -5,7 +5,7 @@ function out = NBR(y, X_train, S1, S2, L)
 %% algorithm parameters    
 m = length(S1); % number of supervision                                                                                                                       % trade-off of bias/variance     
 % K = min(ceil(m^(dim/(dim+2))),100); %number of hyper-planes
-K = 30;
+K = 50;
 S_pruned = union(S1,S2);
 
 [~,S1] = ismember(S1,S_pruned);

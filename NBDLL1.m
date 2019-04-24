@@ -9,10 +9,10 @@ m = length(S1);
 
 S_pruned = union(union(union(S1,S2),S3),S4);
 
-[~,S1] = ismember(S1,S_pruned);
-[~,S2] = ismember(S2,S_pruned);
-[~,S3] = ismember(S3,S_pruned);
-[~,S4] = ismember(S4,S_pruned);
+[~,S1] = ismember(S1, S_pruned);
+[~,S2] = ismember(S2, S_pruned);
+[~,S3] = ismember(S3, S_pruned);
+[~,S4] = ismember(S4, S_pruned);
 
 %% removing the unused training data and partitioning 
 X = X_train(S_pruned,:); % if data already exists

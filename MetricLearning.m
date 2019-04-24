@@ -1,4 +1,4 @@
-function out = MetricLearning(metric_learn_alg, y, X, A0, params)
+function bregman_div = MetricLearning(metric_learn_alg, y, X, A0, params)
 % A = MetricLearning(metric_learn_alg, X, C, A0, params);
 %
 % Wrapper script that takes in a set of data points and their true labels
@@ -34,5 +34,4 @@ catch
     A = zeros(d,d);
 end    
 
-bregman_div =  @(X1,X2)mahalanobis(X1,X2,A);
-out = {bregman_div, A};
+bregman_div =  @(X1,X2)mahalanobis(X1,X2,A,"all");
