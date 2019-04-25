@@ -3,8 +3,8 @@ function params = NBDLL1(X_train, S1, S2, S3, S4, lambda)
 [n_train, dim] = size(X_train);
 
 %% algorithm parameters                                                     % number of supervision                                                             % noise of supervision                                                                                                                   % trade-off of bias/variance                                                           % number of hyper-planes
-K = min(ceil(n_train^(dim/(dim+2))),100);
-% K = 100;
+% K = min(ceil(n_train^(dim/(dim+2))),100);
+K = 100;
 m = length(S1);
 
 S_pruned = union(union(union(S1,S2),S3),S4);
@@ -99,7 +99,7 @@ C = C1/m + lambda*C2;
 %% solving the LP
 A = [A1;A2;A3;A4;A5;A6];
 b = [b1;b2;b3;b4;b5;b6];
-options = optimoptions('linprog','Algorithm','dual-simplex' ,'Display','final');
+options = optimoptions('linprog','Algorithm','interior-point' ,'Display','final');
 z = linprog(C,A,b,[],[],[],[],options);
 params.phi = z(1:K);
 params.grad = reshape(z(K+1:K*(dim+1)),[dim,K])';

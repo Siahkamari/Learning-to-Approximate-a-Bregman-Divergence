@@ -22,11 +22,11 @@ S1 = zeros(m,1);
 S2 = zeros(m,1);
 S4 = zeros(m,1);
 
-% if n_train > 400
-%     for i=1:max_y
-%         inds{i} = inds{i}(inds{i}<200);
-%     end
-% end
+if n_train > 100
+    for i=1:max_y
+        inds{i} = inds{i}(inds{i}<100);
+    end
+end
 
 count = 0;
 for i = 1:max_y

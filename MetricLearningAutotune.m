@@ -22,7 +22,7 @@ gammas = 10.^(-4:4);
 out = cell(length(gammas), 1);
 accs = zeros(length(gammas), 1);
 for i=1:length(gammas)
-    fprintf('\tTuning burg kernel learning: gamma = %f', gammas(i));
+%     fprintf('\tTuning burg kernel learning: gamma = %f', gammas(i));
     params.gamma = gammas(i); 
     out{i} = cross_validate(y, X, @(y,X) MetricLearning(metric_learn_alg, y, X, A0, params), 2, params.k);
     accs(i) = out{i}{1};
@@ -30,6 +30,6 @@ end
 
 [~,i] = max(accs);
 gamma = gammas(i);
-fprintf('\tOptimal gamma value: %f', gamma);
+fprintf('Optimal gamma value: %f\n', gamma);
 params.gamma = gamma;
 bregman_div  = MetricLearning(metric_learn_alg, y, X, A0, params);
