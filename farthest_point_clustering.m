@@ -12,9 +12,11 @@ for k=1:n_cluster
     [~,center(k+1)] = max(min(dist,[],2));
 end
 [~, center_assign] = min(dist,[],2);
-center = center(1:k);
+center = center(1:end-1);
 
 %% Ploting
 % figure();
 % scatter(X(:,1),X(:,2),40,center_assign, 'filled'); hold on
 % scatter(X(center,1), X(center,2), 40, 'x')
+
+end

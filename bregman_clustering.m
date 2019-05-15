@@ -5,7 +5,7 @@ function y_hat = bregman_clustering(X_test, num_cluster, bregman_div)
 y_hat = kmeans(X_test, num_cluster);
 
 converge = false;
-for iter=1:400
+for iter=1:5000
     X_bar = zeros(num_cluster,dim);                                         % M step
     for i=1:num_cluster
         X_bar(i,:) = mean(X_test(y_hat==i,:));
@@ -25,5 +25,5 @@ for iter=1:400
 end
 
 if ~converge
-    disp('Warning: bregman clustering didnt converge');
+    warning('bregman clustering didnt converge');
 end

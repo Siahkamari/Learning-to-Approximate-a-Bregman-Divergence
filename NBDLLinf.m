@@ -9,10 +9,10 @@ m = length(S1);
 
 S_pruned = union(union(union(S1,S2),S3),S4);
 
-[~,S1] = ismember(S1,S_pruned);
-[~,S2] = ismember(S2,S_pruned);
-[~,S3] = ismember(S3,S_pruned);
-[~,S4] = ismember(S4,S_pruned);
+[~,S1] = ismember(S1, S_pruned);
+[~,S2] = ismember(S2, S_pruned);
+[~,S3] = ismember(S3, S_pruned);
+[~,S4] = ismember(S4, S_pruned);
 
 %% removing the unused training data and partitioning 
 X = X_train(S_pruned,:); % if data already exists
@@ -92,8 +92,26 @@ C = C1/m + lambda*C2;
 %% solving the LP
 A = [A1;A3;A4;A5;A6];
 b = [b1;b3;b4;b5;b6];
-options = optimoptions('linprog','Algorithm','dual-simplex','Display','final');
-z = linprog(C,A,b,[],[],[],[],options);
+
+try
+    options = optimoptions('linprog','Display','off');
+    z = linprog_gurobi(C,A,b,[],[],[],[],options);
+catch
+    warning('Gurobi is not installed/working, trying Matlab solvers instead');
+    options1 = optimoptions('linprog','Algorithm','interior-point' ,'Display','final',...
+        'MaxIterations',1000);
+    options2 = optimoptions('linprog','Algorithm','dual-simplex' ,'Display','final');
+    options3 = optimoptions('linprog','Algorithm','interior-point-legacy' ,'Display','final');
+    
+    [z, ~, exitFlag] = linprog(C,A,b,[],[],[],[],options1);
+    if exitFlag~=1
+        [z, ~, exitFlag] = linprog(C,A,b,[],[],[],[],options2);
+    end
+    if exitFlag~=1
+        z = linprog(C,A,b,[],[],[],[],options3);
+    end
+end
+
 params.phi = z(1:K);
 params.grad = reshape(z(K+1:K*(dim+1)),[dim,K])';
 

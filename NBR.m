@@ -2,16 +2,16 @@ function out = NBR(y, X_train, S1, S2, L)
 
 [n_train, dim] = size(X_train);
 
-%% algorithm parameters    
-m = length(S1); % number of supervision                                                                                                                       % trade-off of bias/variance     
+%% algorithm parameters
+m = length(S1); % number of supervision                                                                                                                       % trade-off of bias/variance
 % K = min(ceil(m^(dim/(dim+2))),100); %number of hyper-planes
-K = 50;
+K = 100;
 S_pruned = union(S1,S2);
 
 [~,S1] = ismember(S1,S_pruned);
 [~,S2] = ismember(S2,S_pruned);
 
-%% removing the unused training data and partitioning 
+%% removing the unused training data and partitioning
 X = X_train(S_pruned,:); % if data already exists
 n_S = length(S_pruned);
 if K < n_S
@@ -36,13 +36,13 @@ A1 = zeros([n_S*(K-1), K*(2*dim+1)]);
 count = 0;
 for i=1:n_S
     for j=setdiff(1:K, c_ind(i))
-    % condition that D(i,j)>0
-    a = I_n_p(c_ind(i),:) - I_n_p(j,:);
-    b = zeros([1,K*dim]);
-    b((c_ind(i)-1)*dim+1:c_ind(i)*dim) = X(i,:);
-    b((j-1)*dim+1:j*dim) = -X(i,:);
-    count = count + 1;
-    A1(count,:) = -[a,b,zeros([1,K*dim])];
+        % condition that D(i,j)>0
+        a = I_n_p(c_ind(i),:) - I_n_p(j,:);
+        b = zeros([1,K*dim]);
+        b((c_ind(i)-1)*dim+1:c_ind(i)*dim) = X(i,:);
+        b((j-1)*dim+1:j*dim) = -X(i,:);
+        count = count + 1;
+        A1(count,:) = -[a,b,zeros([1,K*dim])];
     end
 end
 b1 = zeros(n_S*(K-1),1);
@@ -57,7 +57,7 @@ for count=1:m
     b((c_ind(i)-1)*dim+1:c_ind(i)*dim) = X(i,:);
     b((c_ind(j)-1)*dim+1:c_ind(j)*dim) = -X(i,:);
     
-    A2(count,:) = [a,b,zeros([1,K*dim])]; 
+    A2(count,:) = [a,b,zeros([1,K*dim])];
 end
 
 % condition -t_ij < g_ij < t_ij
@@ -72,13 +72,25 @@ for i=1:K
     A5(i, K*(dim+1)+(i-1)*dim +1:K*(dim+1)+i*dim) = 1;
 end
 b5 = L*ones(K,1);
- 
+
 %% solving the LP
 A = [A1;A3;A4;A5];
 b = [b1;b3;b4;b5];
-options = optimoptions('lsqlin','Algorithm','interior-point' ,'Display','off');
-[z, resnorm] = lsqlin(A2,y,A,b,[],[],[],[],[],options);
-params.phi = z(1:K);
-params.grad = reshape(z(K+1:K*(dim+1)),[dim,K])';
+try
+    try
+        options = optimoptions('quadprog', 'Display','off');
+        [z, resnorm] = quadprog_gurobi(A2'*A2,-2*y'*A2,A,b,[],[],[],[],options);
+    catch
+        warning('Gurobi is not installed/working, trying Matlab solvers instead');
+        options = optimoptions('lsqlin','Algorithm','interior-point' ,'Display','off');
+        [z, resnorm] = lsqlin(A2,y,A,b,[],[],[],[],[],options);
+    end
+    params.phi = z(1:K);
+    params.grad = reshape(z(K+1:K*(dim+1)),[dim,K])';
+    out = {params,resnorm/m};
+catch
+    warning('Optimization didnt succeed, trying again');
+    out = NBR(y(2:end), X, S1(2:end), S2(2:end), L);
+end
 
-out = {params,resnorm/m};
+end

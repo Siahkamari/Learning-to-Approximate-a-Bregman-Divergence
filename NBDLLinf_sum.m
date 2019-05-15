@@ -96,8 +96,26 @@ C = C1 + lambda*C2;
 %% solving the LP
 A = [-A1;-A3;-A4;A5;-A6];
 b = [zeros(n_S*(K-1),1);-1*ones(m,1);zeros(2*K*dim,1);zeros(m,1)];
-options = optimoptions('linprog','Algorithm','interior-point','Display','iter');
-z = linprog(C,A,b,[],[],[],[],options);
+
+try
+    options = optimoptions('linprog','Display','off');
+    z = linprog_gurobi(C,A,b,[],[],[],[],options);
+catch
+    warning('Gurobi is not installed/working, trying Matlab solvers instead');
+    options1 = optimoptions('linprog','Algorithm','interior-point' ,'Display','final',...
+        'MaxIterations',1000);
+    options2 = optimoptions('linprog','Algorithm','dual-simplex' ,'Display','final');
+    options3 = optimoptions('linprog','Algorithm','interior-point-legacy' ,'Display','final');
+    
+    [z, ~, exitFlag] = linprog(C,A,b,[],[],[],[],options1);
+    if exitFlag~=1
+        [z, ~, exitFlag] = linprog(C,A,b,[],[],[],[],options2);
+    end
+    if exitFlag~=1
+        z = linprog(C,A,b,[],[],[],[],options3);
+    end
+end
+
 params.phi = z(1:K);
 params.grad = reshape(z(K+1:K*(dim+1)),[dim,K])';
 

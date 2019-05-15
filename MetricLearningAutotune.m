@@ -1,4 +1,4 @@
-function bregman_div = MetricLearningAutotune(metric_learn_alg, y, X, params)
+function [bregman_div, A] = MetricLearningAutotune(metric_learn_alg, y, X, params, task)
 % function A = MetricLearningAutotuneKnn(metric_learn_alg, y, X, params); 
 %
 % metric_learn_alg: 
@@ -18,13 +18,13 @@ A0 = eye(size(X, 2));
 
 % define gamma values for slack variables
 gammas = 10.^(-4:4);
-
+n_folds = 3;
 out = cell(length(gammas), 1);
 accs = zeros(length(gammas), 1);
 for i=1:length(gammas)
 %     fprintf('\tTuning burg kernel learning: gamma = %f', gammas(i));
     params.gamma = gammas(i); 
-    out{i} = cross_validate(y, X, @(y,X) MetricLearning(metric_learn_alg, y, X, A0, params), 2, params.k);
+    out{i} = cross_validate(y, X, @(y,X) MetricLearning(metric_learn_alg, y, X, A0, params), n_folds, params.k, task);
     accs(i) = out{i}{1};
 end
 
@@ -32,4 +32,4 @@ end
 gamma = gammas(i);
 fprintf('Optimal gamma value: %f\n', gamma);
 params.gamma = gamma;
-bregman_div  = MetricLearning(metric_learn_alg, y, X, A0, params);
+[bregman_div, A]  = MetricLearning(metric_learn_alg, y, X, A0, params);

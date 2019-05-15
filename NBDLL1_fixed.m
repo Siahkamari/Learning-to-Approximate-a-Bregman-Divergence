@@ -1,4 +1,4 @@
-function params = NBDLL1(X_train, S1, S2, S3, S4, lambda)
+function params = NBDLL1_fixed(X_train, S1, S2, S3, S4, lambda)
 
 [n_train, dim] = size(X_train);
 
@@ -6,7 +6,7 @@ function params = NBDLL1(X_train, S1, S2, S3, S4, lambda)
 % K = min(ceil(n_train^(dim/(dim+2))),100);
 K = 100;
 m = length(S1);
-L = 100;
+L = 50;
 
 S_pruned = union(union(union(S1,S2),S3),S4);
 
@@ -98,8 +98,26 @@ C = [zeros(1,K*(2*dim+1)),ones(1,m)];                                    % sum (
 %% solving the LP
 A = [A1;A2;A3;A4;A5;A6];
 b = [b1;b2;b3;b4;b5;b6];
-options = optimoptions('linprog','Algorithm','dual-simplex' ,'Display','final');
-z = linprog(C,A,b,[],[],[],[],options);
+
+try
+    options = optimoptions('linprog','Display','off');
+    z = linprog_gurobi(C,A,b,[],[],[],[],options);
+catch
+    warning('Gurobi is not installed/working, trying Matlab solvers instead');
+    options1 = optimoptions('linprog','Algorithm','interior-point' ,'Display','final',...
+        'MaxIterations',1000);
+    options2 = optimoptions('linprog','Algorithm','dual-simplex' ,'Display','final');
+    options3 = optimoptions('linprog','Algorithm','interior-point-legacy' ,'Display','final');
+    
+    [z, ~, exitFlag] = linprog(C,A,b,[],[],[],[],options1);
+    if exitFlag~=1
+        [z, ~, exitFlag] = linprog(C,A,b,[],[],[],[],options2);
+    end
+    if exitFlag~=1
+        z = linprog(C,A,b,[],[],[],[],options3);
+    end
+end
+
 params.phi = z(1:K);
 params.grad = reshape(z(K+1:K*(dim+1)),[dim,K])';
 

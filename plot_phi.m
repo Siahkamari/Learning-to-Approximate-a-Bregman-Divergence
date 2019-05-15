@@ -1,6 +1,5 @@
 function plot_phi(y, X, params)
 
-figure()
 d_mesh = 0.1;                                                               % mesh increments
 
 dim = size(X,2);
