@@ -1,5 +1,8 @@
 function [S1, S2, S3, S4] = get_supervision_pairs(m, y_train)
-                                                                % number of supervision                                                             % noise of supervision                                                                                                                             % trade-off of bias/variance                                                           % number of hyper-planes
+% Input: m number of supervisions needed. y_train = class labels 
+% Output: S1 and S2 index of randomly chosen pairs that are in the same
+% cluster
+
 
 %% computing the data parameters from data
 max_y = max(y_train);
@@ -22,11 +25,11 @@ S1 = zeros(m,1);
 S2 = zeros(m,1);
 S4 = zeros(m,1);
 
-% if n_train > 100
-%     for i=1:max_y
-%         inds{i} = inds{i}(inds{i}<100);
-%     end
-% end
+if n_train > 1000
+    for i=1:max_y
+        inds{i} = inds{i}(inds{i}<1000);
+    end
+end
 
 count = 0;
 for i = 1:max_y

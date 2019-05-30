@@ -1,4 +1,12 @@
 function plot_phi(y, X, params)
+% Input: params = either a mahalanobis metric covariance matrix or
+% parameters of the bregman divergence (all hyperplanes slopes and biases)
+
+
+% Output: plots a 3d mesh of the underlying convex function of the bregma
+% divergence as well as the training data
+
+% the learning code is not using this code. this is just for visualization
 
 d_mesh = 0.1;                                                               % mesh increments
 

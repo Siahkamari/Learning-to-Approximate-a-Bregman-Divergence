@@ -1,17 +1,10 @@
 function dis = mahalanobis(X1, X2, A, mode)
-% dis = 0;
-% L = sqrtm(A);
-% X1 = X1*L;
-% X2 = X2*L;
-% if nargin >3 && mode =="all"
-%     for d=1:size(X1,2)
-%         dis = dis + (X1(:,d)-X2(:,d)').^2;
-%     end
-% else
-%     for d=1:size(X1,2)
-%         dis = dis + (X1(:,d)-X2(:,d)).^2;
-%     end
-% end
+
+% Input: X1 = n1 x d data matix. X2 = n2 x d data matix.
+% A = d x d matrix of a mahalanobis distance
+% if mode is all it computes the mahalanobis between all data pairs
+% if mode is not all if computes the mahalanobis between each to
+% corrosponding entrees in X1 and X2 (n1 should be equal n2)
 
 n1 = size(X1,1);
 n2 = size(X2,1);

@@ -1,4 +1,9 @@
 function [auc, ave_p ] = ranking_metrics(y, divs)
+% Input: y are the class labels of training data a n x 1 vector
+% divs is a n x n matrix where divs(i,j) is divergence of X_i from X_j
+
+% Output: rankings mesures, auc = area under the curve.
+% ave_p = Average precision
 
 max_y = max(y);
 n = size(y,1);
@@ -16,7 +21,7 @@ y_count = y_count - 1;
 pre_k = cumsum(y(inds)==y,2);
 pre_k = pre_k ./(1:n-1);
 ave_p = nanmean(sum(pre_k .* (y(inds)==y), 2)./y_count(y));
-pre_k = mean(pre_k,1);
+% pre_k = mean(pre_k,1);
 
 
 %% AUC

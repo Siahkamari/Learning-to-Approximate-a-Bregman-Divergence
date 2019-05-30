@@ -1,4 +1,8 @@
 function [center, center_assign] = farthest_point_clustering(X,n_cluster)
+% Input: X = nxd data matrix. n_cluster = number of clusters for the farthest point partitioning
+% algorithm. 
+
+% Output: center = cluster centers, center_assign = cluster assignments
 
 [n, dim] = size(X);
 center = zeros(n_cluster+1,1);

@@ -1,0 +1,241 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2018 The MathWorks, Inc.
+                   R2018b (9.5.0.944444) 64-bit (glnxa64)
+                              August 28, 2018
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+
+cF =
+
+    '/usr3/graduate/siaa/Downloads/PBDL'
+
+
+The MATLAB interface for Gurobi 8.1.1 has been installed.
+
+The directory
+    /usr3/graduate/siaa/Documents/gurobi811/linux64/matlab/
+has been added to the MATLAB path.
+To use Gurobi regularly, you must save this new path definition.
+To do this, type the command
+    savepath
+at the MATLAB prompt. Please consult the MATLAB documentation
+if necessary.
+run 1/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+run 2/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 3/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 4/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 100.000000
+run 5/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 6/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 7/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 8/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 9/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 10/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 11/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 12/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 13/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 14/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 15/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 16/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+run 17/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 18/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 19/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 20/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 21/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 22/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 23/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 24/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 25/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 26/50
+Optimal gamma value: 100.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 27/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 28/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 29/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 30/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 31/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 32/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 33/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+run 34/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 35/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 36/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 37/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 38/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+run 39/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 40/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 41/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+run 42/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 43/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 1000.000000
+run 44/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 45/50
+Optimal gamma value: 100.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 46/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 47/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+run 48/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 49/50
+Optimal gamma value: 1000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+run 50/50
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+Optimal gamma value: 10000.000000
+
+
+ Rand Index = 82.9  -/+  1.5 
+
+
+ Purity = 84.0  -/+  1.7 
+
+
+ K-NN Accuracy = 93.3  -/+  0.5 
+
+
+ Ave_P 84.0  -/+  0.9 
+
+
+ AUC = 88.9  -/+  0.7 

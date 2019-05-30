@@ -1,6 +1,12 @@
 function A = MR(y, X_train, S1, S2)
 % Mahalanobis regression
 
+% Input: y and x are training data as usuall (X is n x d)
+% S1 and S2 are the indicies randomly chosen training data that are going
+% to be used for regression 
+
+% Output: A a d x d matrix for the learned mahalanobis distance
+
 [~, dim] = size(X_train);
 
 %% algorithm parameters

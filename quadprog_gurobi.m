@@ -1,5 +1,6 @@
 function [x,fval,exitflag,output,lambda] = quadprog_gurobi(H,f,A,b,Aeq,beq,lb,ub,options)
-
+% this function is downloaded and a bit modified from Gurobi website. it is equavalent of
+% quad prog in matlab. read quadprog documentation if you are interested.
 
 % Build Gurobi model
 model.Q = sparse(H);

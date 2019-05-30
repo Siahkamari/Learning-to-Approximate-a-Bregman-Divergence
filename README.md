@@ -1,45 +1,45 @@
-Information-theoretic Metric Learning README File
+Peacewise-Linear Bregman Divergence Learning (PBDL) README File
 =================================================
 
-1. Quick-start
+1. Prerequisites:
 
-To test the code, we have provided a demo Matlab script Test.m, which runs
-metric learning with cross-validation and k-nearest neighbors over the
-example data set Iris.  Simply type 'Test' in the Matlab command prompt.  If
-everything is working properly, the accuracy of the nearest neighbor
-classifier using the learned metric should be around 95%.
+a) Matlab (We used 2019a though it shoud be compatible with other versions)
+b) For faster computation time, install Gurobi optimization and its matlab interface from "gurobi.com" 
 
-2. Using the code
+2. Quick-start regression
 
-For fully supervised cases, metric learning is generally invoked after
-creating constraints from the labels---similarity constraints are generated
-for pairs of points in the same class, and dissimilarity constraints are
-generated for pairs of points in different classes.  The function
-MetricLearnAutotuneKnn.m creates random constraints from a labeled data set,
-runs metric learning while varying the gamma parameter, and returns a 
-Mahalanobis matrix A.  When a nearest neighbor classifier is desired, the
-function CrossValidateKNN.m can be used to perform classification with
-cross-validation.
+To test the code, we have provided a demo Matlab script "test_regression.m", which runs
+PBDL for regression with synthetic data. If everything is working properly you should
+see a plot of the regression error which reaches around 0.05 with the full 50 point data-set.
+The code file which does the optimization is "PBR.m"
+You can change the method to "Mahalanobis regression" as guided in the code.
+You can also change the data-set or other experiment settings. 
 
-For example, to generate cross-validated KNN accuracy on a data set X with
-labels y using standard Euclidean distance, you can use the following
-command:
+3. Quick-start pairwise dimilarity
 
-acc=CrossValidateKNN(y,X,@(y,X) EuclideanDistance(X),num_folds,knn_neighbor_size);
+to test the code, we have provided a demo Matlab script "test_pairwise.m", which runs PBDL
+for pairwise similarity comparisions on Iris data-set. Using the learned Bregman divergence,
+the code will print out different performance metrics for, clustering, K-nn and similarity ranking.
+If everything is working correctly, you should first see tuning for hyperparameters results.
+Then you should see the performance measures to be:
 
-The EuclideanDistance.m function is provided.
+Rand Index = 94.5  -/+  2.5             (95%  approximate confidence interval)
+Purity = 95.7  -/+  1.9
+K-NN Accuracy = 96.0  -/+  1.0 
+Ave_P 92.3  -/+  2.4
+AUC = 95.7  -/+  1.5
 
-In many simple cases, the Test.m script can easily be modified to handle
-other labeled data sets.  In other cases, such as when there are
-user-defined constraints, the ItmlAlg.m program can be invoked directly.  As
-input, this function requires the constraints, the data matrix, the initial
-Mahalanobis matrix, and a set of parameters.  See ItmlAlg.m for information
-on the format for these inputs.
+Similarity comparisions are generated as follows: 500 random pairs from similar class and 500
+random pairs from different classes. The core file which does the optimziation is "PBDLL1"
+You can change the method or data-set or other experiment settings as guided in the code.
 
-3. Citation
+4. Other files & folders
+data folder: data-sets that we used on our paper "Learning Bregman Divergences"
+results: regression and pairwise comparision experiment results of our paper
+figure: figures used in our paper
 
-Finally, please acknowledge the use of our code with a citation:
+5. Help
 
-Jason V. Davis, Brian Kulis, Prateek Jain, Suvrit Sra, and Inderjit
-S. Dhillon.  "Information-theoretic Metric Learning."  Proc. 24th
-International Conference on Machine Learning (ICML), 2007.
+For any problems please contact us at: siaa@bu.edu. We'll be happy to 
+resolve your issue and improve our code.
+We suggest you to read our paper [Learning Bregman Divergences](https://arxiv.org/abs/1905.11545).

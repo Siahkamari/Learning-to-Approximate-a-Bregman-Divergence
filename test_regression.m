@@ -1,29 +1,44 @@
-clear, clc
-rng(0);
+% Main file for learning Bregman divergences from similarity values
+% Output: Prints a plot. showing regression error vs number of training
+% data used
 
 %% experiment setting
-dset = 'unit_box';
-dset = 'drch_probs';
-dset = 'herm_matrix';
+clear, clc, rng(0);
 
-breg = 'ItSa';
-breg = 'Mahal';
-breg = 'GID';
-breg = 'KL';
-breg = 'LogDet';
+% choose the method
+method = 'PBR';                 % PBDL for regression
+% method = 'MR';                % Mahalanobis regression
 
-method = 'NBR';
-% method = 'MR';
-% method = 'MLP';
+% choose the data set:
+% option = 1;
+option = 2;
+% option = 3;
 
-L = 100;
-min_n = 5;
-max_n = 100;
-n_test = 1000;
-sigma = 0.05;
+switch option
+    case 1
+        dset = 'unit_box';      % data comming from a unit ball
+        breg = 'ItSa';          % Itakura-Saito Divergence
+        % breg = 'Mahal';       % Mahalanobis distance
+        % breg = 'GID';         % General I-Divergence
+    case 2
+        dset = 'drch_probs';    % data comming from dirichlet distribution
+        breg = 'KL';            % KL Divergence
+    case 3
+        dset = 'herm_matrix';   % data are hermitian matrices
+        breg = 'LogDet';        % Log-Det Divergenc
+end
+
+
+min_n = 5;                      % start of experiment                        
+max_n = 50;                     % end of experiment
+n_test = 1000;                  % number of test data points
+sigma = 0.05;                   % std of noise of observation
 dim = 2;
-num_run = 50;
+num_run = 1;                    % number of runs for averaging
+
 n_array = (min_n:5:max_n);
+
+L = 100;                        % hyperparameter: bound on gradient of function
 
 %% running
 err = zeros(length(n_array),num_run);
@@ -39,7 +54,7 @@ for run=1:num_run
             X_test = drchrnd(n_test, ones([1, dim]));
         case 'herm_matrix'
             X = matrnd(max_n, dim);
-            X_test = matrnd(n_test, dim);  
+            X_test = matrnd(n_test, dim);
     end
     
     [S1_test,S2_test] = meshgrid(1:n_test,1:n_test);
@@ -82,20 +97,13 @@ for run=1:num_run
         y = y_all(sub2ind(size(y_all),S1,S2));
         
         switch method
-            case "NBR"
-                out = NBR(y, X, S1, S2, L);
+            case "PBR"
+                out = PBR(y, X, S1, S2, L);
                 params = out{1};
                 bregman_div = @(X1,X2)max_affine_bregman(X1,X2,params);
             case "MR"
                 A = MR(y, X, S1, S2);
                 bregman_div =  @(X1,X2)mahalanobis(X1,X2,A);
-            case "MLP"
-                hiddenLayerSize =5;
-                net = fitnet(hiddenLayerSize);
-                net.divideParam.trainRatio = 80/100;
-                net.divideParam.valRatio = 20/100;
-                [net,tr] = train(net,[X(S1,:),X(S2,:)]',y');
-                bregman_div =  @(X1,X2)net([X1,X2]')';
         end
         
         y_hat = bregman_div(X_test(S1_test,:),X_test(S2_test,:));
@@ -104,12 +112,12 @@ for run=1:num_run
     end
 end
 
-save(method+"_"+breg+".mat",'err')
+save(method+"_"+breg+"dim"+num2str(dim)+".mat",'err')
 n_array = n_array';
 
 %% Plotting
 zn = 1.96;
-% figure('Position', [0 0 350 300]);  hold on
+figure('Position', [0 0 350 300]);  hold on
 e = std(err,0,2)/sqrt(num_run);
 lo = max(0,mean(err,2) - zn*e);
 hi = mean(err,2) + zn*e;
@@ -131,12 +139,10 @@ switch breg
         title('Generalized I-divergence')
 end
 switch method
-    case 'NBR'
+    case 'PBR'
         legend('Bregman regression')
     case 'MR'
         legend('Mahalanobis regression')
-    case 'MLP'
-        legend('MLP regression')
 end
 
 

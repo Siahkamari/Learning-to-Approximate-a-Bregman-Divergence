@@ -1,17 +1,19 @@
-function test_pairwise(dset, task)
+% Main file for learning Bregman divergences from pairwise supervision
+% Output: prints and saves clustering, ranking and knn results
 
 %% experiment parameters
-% method ="Euclidean";
-% method = "ITML";
-method = "NBDL";
-% method = "NCA";
-% method = "LMNN";
+clear, clc, rng(0)
 
-knn_size = 5;
-n_folds = 3;
-n_runs = 50;
-n_sup = 15000;
-% task = 1;     % performance measure for cross_validation hyper-parameter search
+method = "Euclidean";
+% method = "PBDL";
+
+dset = 1;               % chooses data set. 1 2 3 4 5 6 can be chosen.
+task = 1;               % 1-5 performance measure for cross_validation hyper-parameter search
+knn_size = 5;           % knn size
+n_folds = 3;            % number of cross validation folds 
+n_runs = 2;             % number of runs for averging
+n_sup = 1000;           % number of pairwise supervisions
+
 
 %% loading data
 switch dset
@@ -27,33 +29,14 @@ switch dset
         data = load('data/transfusion.mat'); % 748 x 4
     case 6
         data = load('data/synthetic2.mat'); % 600 x 2
-    case 7
-        data = load('data/wdbc.mat');  % 569 x 30
-    case 8
-        data = load('data/breast-cancer.mat'); % 286 x 9
-    case 9
-        data = load('data/abalone.mat'); % 4177 x 8
-    case 10
-        data = load('data/soybean-large.mat'); % 307 x 35
-    case 11
-        data = load('data/letterrecognition.mat'); % 20000 x 16
 end
 
 X = data.X;
 y = data.y;
 clear data
 
-% perm = randperm(length(y));
-% X = X(perm,:);
-% y = y(perm);
-
-% X = X(1:500,:);
-% y = y(1:500,:);
-
-% [~,X,~] = pca(X, 'NumComponents', 10);
-
 %% running
-rng(0)
+
 total_purity = zeros(n_runs,n_folds);
 rand_index = zeros(n_runs,n_folds);
 acc = zeros(n_runs,n_folds);
@@ -66,18 +49,9 @@ for run=1:n_runs
     if method == "Euclidean"
         out = cross_validate(y, X, ...
             @(y,X) euclidean_bregman(size(X,2)), n_folds, knn_size, task);
-    elseif method == "ITML"
+    elseif method == "PBDL"
         out = cross_validate(y, X, ...
-            @(y,X) MetricLearningAutotune(@ItmlAlg, y, X,[], task), n_folds, knn_size, task);
-    elseif method == "NBDL"
-        out = cross_validate(y, X, ...
-            @(y,X) auto_tune_NBDL(y, X, n_sup, task), n_folds, knn_size, task);
-    elseif method == "NCA"
-        out = cross_validate(y, X, ...
-            @(y,X) auto_tune_NCA(y, X, task), n_folds, knn_size, task);
-    elseif method == "LMNN"
-        out = cross_validate(y, X, ...
-            @(y,X) auto_tune_LMNN(y, X), n_folds, knn_size, task);
+            @(y,X) auto_tune_PBDL(y, X, n_sup, task), n_folds, knn_size, task);
     end
     
     rand_index(run,:) = out{2};
@@ -87,6 +61,7 @@ for run=1:n_runs
     auc(run,:) = out{6};
 end
 
+%% Saving all task measures
 save("dset"+num2str(dset)+"_"+method+"_m"+num2str(n_sup)+"_n_runs"+num2str(n_runs)+...
     "_task"+num2str(task)+".mat",'rand_index','total_purity','acc', 'ave_p', 'auc', 'n_folds', 'n_runs');
 
@@ -100,7 +75,7 @@ fprintf("\n\n Purity = %.1f  -/+  %.1f \n",...
 
 fprintf("\n\n K-NN Accuracy = %.1f  -/+  %.1f \n",...
     round(100*mean(acc(:)),1), round(zn*100*std(acc(:))/sqrt(n_folds*n_runs),1));
-
+ 
 fprintf("\n\n Ave_P %.1f  -/+  %.1f \n",...
     round(100*mean(ave_p(:)),1), round(zn*100*std(ave_p(:))/sqrt(n_folds*n_runs),1));
 

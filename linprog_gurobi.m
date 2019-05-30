@@ -140,7 +140,7 @@ end
 if isfield(options,'MaxTime') || isa(options,'optim.options.SolverOptions')
     params.TimeLimit = options.MaxTime;
 end
-
+params.Threads = 8; %%  change if you have more threads! or set to 0
 % Solve model with Gurobi
 result = gurobi(model,params);
 

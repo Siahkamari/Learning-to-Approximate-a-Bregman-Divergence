@@ -1,5 +1,8 @@
 function out = cross_validate(y, X, tCL, n_folds, knn_size, task)
+% This code is based on that of cross validation from ITML
+%(Information theoretic Metric learning)
 
+% making sure output labels start from 1
 if min(y) == 0
     y = y + 1;
 end
@@ -11,11 +14,12 @@ if (n ~= length(y))
     return;
 end
 
-%permute the rows of X and y
+% Permute the rows of X and y
 rp = randperm(n);
 y = y(rp);
 X = X(rp, :);
 
+% Initializing different measure
 total_purity = zeros(1, n_folds);
 rand_index = zeros(1, n_folds);
 acc = zeros(1,n_folds);
@@ -44,11 +48,16 @@ for i=1:n_folds
     
     %% learning the divergence and clustering/knn/ranking with it
     [bregman_div, params] = feval(tCL, y_train, X_train);
-    [rand_index(i), total_purity(i)] = median_clustering(y_test, X_test, n_cluster, bregman_div);
     
+    % clustering
+    [rand_index(i), total_purity(i)] =...
+        median_clustering(y_test, X_test, n_cluster, bregman_div);
+    
+    % knn
     pred = divergence_knn(y_train, X_train, X_test, bregman_div, knn_size);
-    acc(i) = mean(pred==y_test);
+    acc(i) = mean(pred == y_test);
     
+    % ranking
     div_rank = bregman_div(X_test, X_test);
     [auc(i), ave_p(i)] = ranking_metrics(y_test, div_rank);
     
@@ -92,4 +101,5 @@ out{4} = acc;
 out{5} = ave_p;
 out{6} = auc;
 
+% this one is for hyperparametr search objective.
 out{1} = mean(out{task+1});

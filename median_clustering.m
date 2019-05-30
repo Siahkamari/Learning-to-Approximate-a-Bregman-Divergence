@@ -1,10 +1,23 @@
 function [median_rand_index, median_total_purity] = median_clustering(y, X, n_cluster, bregman_div)
 
-num_run = 20;
+% Input: y = training labels. X = n x d data matrix
+% n_cluster = number of clusters. bregman_div = a function handle to a
+% bregman divergence
+
+% Output: various averaged clustering performance measures
+
+
+
+num_run = 20;               % since clutering can converge to bad local optima,
+% we do the clustering 20 times and report the median of the performance measures
+
+% preallocating matrices for clustering performance measures
 total_purity = zeros(num_run,1);
 rand_index = zeros(num_run,1);
 
+% running!
 for run = 1:num_run
+    % y_hat are the classes found by bregman clustering
     y_hat = bregman_clustering(X, n_cluster, bregman_div);
     
     %% computing purity
@@ -27,6 +40,7 @@ for run = 1:num_run
             (y(i)==y(setdiff(1:n_test, i))));
     end
     rand_index(run) = rand_index(run)/(n_test*(n_test-1));
+    
 end
 
 median_rand_index = median(rand_index);
