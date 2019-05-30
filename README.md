@@ -24,8 +24,10 @@ the code will print out different performance metrics for, clustering, K-nn and 
 If everything is working correctly, you should first see tuning for hyperparameters results.
 Then you should see the performance measures to be:
 
-Rand Index = 94.5  -/+  2.5             (95%  approximate confidence interval)\\
-Purity = 95.7  -/+  1.9\\
+Rand Index = 94.5  -/+  2.5             (95%  approximate confidence interval)
+
+Purity = 95.7  -/+  1.9
+
 K-NN Accuracy = 96.0  -/+  1.0 
 
 Ave_P 92.3  -/+  2.4
