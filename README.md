@@ -4,6 +4,7 @@ Peacewise-Linear Bregman Divergence Learning (PBDL) README File
 1. Prerequisites:
 
 a) Matlab (We used 2019a though it shoud be compatible with other versions)
+
 b) For faster computation time, install Gurobi optimization and its matlab interface from "gurobi.com" 
 
 2. Quick-start regression
@@ -11,7 +12,7 @@ b) For faster computation time, install Gurobi optimization and its matlab inter
 To test the code, we have provided a demo Matlab script "test_regression.m", which runs
 PBDL for regression with synthetic data. If everything is working properly you should
 see a plot of the regression error which reaches around 0.05 with the full 50 point data-set.
-The code file which does the optimization is "PBR.m"
+The core code which does the optimization is "PBR.m"
 You can change the method to "Mahalanobis regression" as guided in the code.
 You can also change the data-set or other experiment settings. 
 
