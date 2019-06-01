@@ -16,7 +16,7 @@ The core code which does the optimization is "PBR.m"
 You can change the method to "Mahalanobis regression" as guided in the code.
 You can also change the data-set or other experiment settings. 
 
-3. Quick-start pairwise dimilarity
+3. Quick-start pairwise similarity
 
 to test the code, we have provided a demo Matlab script "test_pairwise.m", which runs PBDL
 for pairwise similarity comparisions on Iris data-set. Using the learned Bregman divergence,
