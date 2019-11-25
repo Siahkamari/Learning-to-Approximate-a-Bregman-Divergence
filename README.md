@@ -22,17 +22,17 @@ to test the code, we have provided a demo Matlab script "test_pairwise.m", which
 for pairwise similarity comparisions on Iris data-set. Using the learned Bregman divergence,
 the code will print out different performance metrics for, clustering, K-nn and similarity ranking.
 If everything is working correctly, you should first see tuning for hyperparameters results.
-Then you should see the performance measures to be:
+Then you should see the performance measures to be:   
 
-Rand Index = 94.5  -/+  2.5             (95%  approximate confidence interval)
+ Rand Index = 92.7  -/+  3.3  (95%  approximate confidence interval)
 
-Purity = 95.7  -/+  1.9
+ Purity = 93.7  -/+  3.3 
 
-K-NN Accuracy = 96.0  -/+  1.0 
+ K-NN Accuracy = 95.3  -/+  1.7 
 
-Ave_P 92.3  -/+  2.4
+ Ave_P 88.9  -/+  2.0 
 
-AUC = 95.7  -/+  1.5
+ AUC = 94.3  -/+  1.4 
 
 Similarity comparisions are generated as follows: 500 random pairs from similar class and 500
 random pairs from different classes. The core file which does the optimziation is "PBDLL1"
