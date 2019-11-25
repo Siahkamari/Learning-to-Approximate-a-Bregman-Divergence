@@ -1,4 +1,4 @@
-function params = PBDLL1(X_train, S1, S2, S3, S4, lambda, K, trial_n)
+function params = PBDL_core_old_K(X_train, S1, S2, S3, S4, lambda, K, trial_n)
 % this is the core code for learning a bregman divergence from pairwise
 % inequalities.
 

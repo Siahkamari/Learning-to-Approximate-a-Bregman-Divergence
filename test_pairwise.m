@@ -4,15 +4,15 @@
 %% experiment parameters
 clear, clc, rng(0)
 
-method = "Euclidean";
-% method = "PBDL";
+% method = "Euclidean";
+method = "PBDL";
 
 dset = 1;               % chooses data set. 1 2 3 4 5 6 can be chosen.
 task = 1;               % 1-5 performance measure for cross_validation hyper-parameter search
 knn_size = 5;           % knn size
 n_folds = 3;            % number of cross validation folds 
 n_runs = 2;             % number of runs for averging
-n_sup = 1000;           % number of pairwise supervisions
+n_sup = 1000;          % number of pairwise supervisions
 
 
 %% loading data
