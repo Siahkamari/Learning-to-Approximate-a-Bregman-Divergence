@@ -25,6 +25,6 @@ for iter=1:500
     
 end
 
-if ~converge
-    warning('bregman clustering didnt converge');
-end
+% if ~converge
+%     warning('bregman clustering didnt converge');
+% end

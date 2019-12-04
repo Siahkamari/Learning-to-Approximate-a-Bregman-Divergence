@@ -5,11 +5,7 @@
 %% experiment setting
 clear, clc, rng(0);
 
-% choose the method
-method = 'PBR';                 % PBDL for regression
-% method = 'MR';                % Mahalanobis regression
-
-% choose the data set:
+% only uncomment one of the options bellow:
 % option = 1;
 option = 2;
 % option = 3;
@@ -29,8 +25,12 @@ switch option
 end
 
 
+method = 'PBR';                 % PBDL for regression
+% method = 'MR';                % Mahalanobis regression
+% method = 'MLP';
+
 min_n = 5;                      % start of experiment                        
-max_n = 50;                     % end of experiment
+max_n = 100;                    % end of experiment
 n_test = 1000;                  % number of test data points
 sigma = 0.05;                   % std of noise of observation
 dim = 2;
@@ -38,7 +38,7 @@ num_run = 1;                    % number of runs for averaging
 
 n_array = (min_n:5:max_n);
 
-L = 100;                        % hyperparameter: bound on gradient of function
+L = 10000000;                   % hyperparameter: bound on gradient of function
 
 %% running
 err = zeros(length(n_array),num_run);
@@ -104,6 +104,9 @@ for run=1:num_run
             case "MR"
                 A = MR(y, X, S1, S2);
                 bregman_div =  @(X1,X2)mahalanobis(X1,X2,A);
+            case "MLP"
+                net = auto_tune_mlp(y, X, S1, S2);
+                bregman_div =  @(X1,X2)net([X1,X2]')';
         end
         
         y_hat = bregman_div(X_test(S1_test,:),X_test(S2_test,:));
@@ -143,6 +146,8 @@ switch method
         legend('Bregman regression')
     case 'MR'
         legend('Mahalanobis regression')
+    case 'MLP'
+        legend('MLP regression')
 end
 
 

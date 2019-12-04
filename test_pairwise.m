@@ -4,16 +4,21 @@
 %% experiment parameters
 clear, clc, rng(0)
 
-% method = "Euclidean";
-method = "PBDL";
+% method ="Euclidean";
+% method = "ITML";
+method = "PBDL";    n_sup = 1000;             % number of pairwise supervisions
+% method = "NCA";         % uncomment the method you desire
+% method = "LMNN";
 
-dset = 1;               % chooses data set. 1 2 3 4 5 6 can be chosen.
-task = 1;               % 1-5 performance measure for cross_validation hyper-parameter search
-knn_size = 5;           % knn size
-n_folds = 3;            % number of cross validation folds 
-n_runs = 2;             % number of runs for averging
-n_sup = 1000;          % number of pairwise supervisions
-
+dset = 1;                 % chooses data set. 1 2 3 4 5 6 can be chosen.
+task = 1;                 % 1: Bregman Clustetring:  Rand-Index
+                          % 2: Bregman Clustetring:  Purity
+                          % 3: Knn: Accuracy
+                          % 4: Ranking: Area Under the curve
+                          % 5: Ranking: Average precision
+                          
+train_test_ratio = 2;     % train/test data split
+n_runs = 1;               % number of runs for averging
 
 %% loading data
 switch dset
@@ -35,49 +40,54 @@ X = data.X;
 y = data.y;
 clear data
 
-%% running
-
-total_purity = zeros(n_runs,n_folds);
-rand_index = zeros(n_runs,n_folds);
-acc = zeros(n_runs,n_folds);
-auc = zeros(n_runs,n_folds);
-ave_p = zeros(n_runs,n_folds);
-
-for run=1:n_runs
-    clc
-    fprintf("run %d/%d\n",run, n_runs)
-    if method == "Euclidean"
-        out = cross_validate(y, X, ...
-            @(y,X) euclidean_bregman(size(X,2)), n_folds, knn_size, task);
-    elseif method == "PBDL"
-        out = cross_validate(y, X, ...
-            @(y,X) auto_tune_PBDL(y, X, n_sup, task), n_folds, knn_size, task);
-    end
-    
-    rand_index(run,:) = out{2};
-    total_purity(run,:) = out{3};
-    acc(run,:) = out{4};
-    ave_p(run,:) = out{5};
-    auc(run,:) = out{6};
+% making sure output labels start from 1
+if min(y) == 0
+    y = y + 1;
 end
 
-%% Saving all task measures
-save("dset"+num2str(dset)+"_"+method+"_m"+num2str(n_sup)+"_n_runs"+num2str(n_runs)+...
-    "_task"+num2str(task)+".mat",'rand_index','total_purity','acc', 'ave_p', 'auc', 'n_folds', 'n_runs');
+[n, d] = size(X);
+n_train = ceil(train_test_ratio/(train_test_ratio+1)*n);
+
+%% running
+scores = zeros(n_runs,1);
+
+for run=1:n_runs
+    I_train = randsample(1:n, n_train);
+    I_test = setdiff(1:n, I_train);
+    y_train = y(I_train);
+    X_train = X(I_train,:);
+    y_test = y(I_test);
+    X_test = X(I_test,:);
+    
+    fprintf("run %d/%d\n",run, n_runs)
+    if method == "Euclidean"
+        bregman_div = @(X1,X2)mahalanobis(X1, X2, eye(d), "all");
+    elseif method == "ITML"
+        bregman_div = ITML(y, X, task);
+    elseif method == "PBDL"
+        bregman_div = auto_tune_PBDL(y, X, n_sup, task);
+    elseif method == "NCA"
+        bregman_div =  auto_tune_NCA(y, X, task);
+    elseif method == "LMNN"
+        bregman_div =  auto_tune_LMNN(y, X, task);
+    end
+    
+    scores(run) = performance_metric(y_train, X_train, y_test, X_test, bregman_div, task);
+end
 
 %% Printing
+switch task
+    case 1
+        str = "Rand Index";
+    case 2
+        str = "Purity";
+    case 3
+        str = "K-NN Accuracy";
+    case 4
+        str = "Area under the curve";
+    case 5
+        str = "Average Precision";
+end
 zn = 1.96;      % 95 percent interval
-fprintf("\n\n Rand Index = %.1f  -/+  %.1f \n",...
-    round(100*mean(rand_index(:)),1),round(zn*100*std(rand_index(:),1)/sqrt(n_folds*n_runs),1));
-
-fprintf("\n\n Purity = %.1f  -/+  %.1f \n",...
-    round(100*mean(total_purity(:)),1),round(zn*100*std(total_purity(:),1)/sqrt(n_folds*n_runs),1));
-
-fprintf("\n\n K-NN Accuracy = %.1f  -/+  %.1f \n",...
-    round(100*mean(acc(:)),1), round(zn*100*std(acc(:))/sqrt(n_folds*n_runs),1));
- 
-fprintf("\n\n Ave_P %.1f  -/+  %.1f \n",...
-    round(100*mean(ave_p(:)),1), round(zn*100*std(ave_p(:))/sqrt(n_folds*n_runs),1));
-
-fprintf("\n\n AUC = %.1f  -/+  %.1f \n",...
-    round(100*mean(auc(:)),1), round(zn*100*std(auc(:))/sqrt(n_folds*n_runs),1));
+fprintf("\n\n %s = %.1f  -/+  %.1f \n",str,...
+    round(100*mean(scores),1),round(zn*100*std(scores)/sqrt(n_runs),1));

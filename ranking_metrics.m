@@ -23,7 +23,6 @@ pre_k = pre_k ./(1:n-1);
 ave_p = nanmean(sum(pre_k .* (y(inds)==y), 2)./y_count(y));
 % pre_k = mean(pre_k,1);
 
-
 %% AUC
 swapped_pairs = sum( (y(inds) ~=y) .*(y_count(y) -  cumsum(y(inds) ==y, 2)), 2);
 auc = 1 - swapped_pairs./(y_count(y).*(n - 1 - y_count(y)));
