@@ -63,13 +63,13 @@ for run=1:n_runs
     if method == "Euclidean"
         bregman_div = @(X1,X2)mahalanobis(X1, X2, eye(d), "all");
     elseif method == "ITML"
-        bregman_div = ITML(y, X, task);
+        bregman_div = ITML(y_train, X_train, task);
     elseif method == "PBDL"
-        bregman_div = auto_tune_PBDL(y, X, n_sup, task);
+        bregman_div = auto_tune_PBDL(y_train, X_train, n_sup, task);
     elseif method == "NCA"
-        bregman_div =  auto_tune_NCA(y, X, task);
+        bregman_div =  auto_tune_NCA(y_train, X_train, task);
     elseif method == "LMNN"
-        bregman_div =  auto_tune_LMNN(y, X, task);
+        bregman_div =  auto_tune_LMNN(y_train, X_train, task);
     end
     
     scores(run) = performance_metric(y_train, X_train, y_test, X_test, bregman_div, task);
