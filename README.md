@@ -39,7 +39,7 @@ figure: figures used in our paper
 
 For any problems please contact us at: siaa@bu.edu We'll be happy to 
 resolve your issue and improve our code.
-We suggest you to read our paper "Learning to Approximate Bregman Divergences".
+We suggest you to read our paper [Learning to Approximate Bregman Divergences](https://arxiv.org/pdf/1905.11545.pdf).
 
 6. Notice
 
