@@ -33,7 +33,7 @@ hyperparameters results. Then you should see :
  Average Precision = 98.3 +- 1.5 
 
 
-Similarity comparisions are generated as follows: 1000 random pairs from similar class and 1000
+Similarity comparisions are generated as follows: 2000 random pairs from similar class and 2000
 random pairs from different classes. The core file which does the optimziation is "PBDL_core"
 You can change the method or data-set or other experiment settings as guided in the code.
 
