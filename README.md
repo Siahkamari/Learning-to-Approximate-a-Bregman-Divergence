@@ -48,4 +48,4 @@ These methods include, ITML, Kernelized LMNN and Kernelized NCA.
 
 
 
-![](results/gifs/pic.png)
+![](pic.png)
