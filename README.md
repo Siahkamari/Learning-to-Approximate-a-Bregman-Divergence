@@ -1,4 +1,4 @@
-Peacewise-Linear Bregman Divergence Learning (PBDL) README File
+Peacewise-Linear Bregman Divergence Learning (PBDL)
 =================================================
 
 1. Prerequisites:
@@ -45,7 +45,6 @@ see a plot of the regression error which reaches around 0.05 with the full 100 p
 The code file which does the optimization is "PBR.m"
 You can change the method to "Mahalanobis regression" as guided in the code. you can also change 
 the data-set or other experiment settings. 
-
 
 
 4. Other files
