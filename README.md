@@ -4,7 +4,7 @@ Peacewise-Linear Bregman Divergence Learning (PBDL) README File
 1. Prerequisites:
 
 a) Matlab (We used 2019a though it shoud be compatible with other versions)
-b) For faster computation time, install Gurobi optimization and its matlab interface from "gurobi.com" 
+b) Gurobi 9.0
 
 
 2. Quick-start pairwise dimilarity
