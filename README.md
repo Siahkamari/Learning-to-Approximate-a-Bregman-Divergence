@@ -45,3 +45,6 @@ We suggest you to read our paper [Learning to Approximate Bregman Divergences](h
 
 You can choose different methods in "test_pairwise.m" by simply uncommenting them.
 These methods include, ITML, Kernelized LMNN and Kernelized NCA.
+
+
+![Alt Text](results/gifs/pic.png)
