@@ -47,5 +47,4 @@ You can choose different methods in "test_pairwise.m" by simply uncommenting the
 These methods include, ITML, Kernelized LMNN and Kernelized NCA.
 
 
-
 ![](pic.png)
