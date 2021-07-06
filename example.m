@@ -10,7 +10,7 @@ rng(0)
 method = "PBDL";                
 % method = "NCA";         % uncomment the method you desire
 % method = "GMML";  
-dset = 1;                 % chooses data set. 1 2 3 4 5 6 can be chosen.
+dset = 3;                 % chooses data set. 1 2 3 4 5 6 can be chosen.
 task = 5;                 % 1: Bregman Clustetring:  Rand-Index
                           % 2: Bregman Clustetring:  Purity
                           % 3: Knn: Accuracy
@@ -19,7 +19,7 @@ task = 5;                 % 1: Bregman Clustetring:  Rand-Index
                           
 n_sup = 2000;             % number of pairwise supervisions ONLY for PBDL and GMML
 train_test_ratio = 2;     % train/test data split
-n_runs = 2;               % number of runs for averging
+n_runs = 10;               % number of runs for averging
 
 %% loading data
 switch dset

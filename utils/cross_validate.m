@@ -10,7 +10,8 @@ if (n ~= length(y))
 end
 
 % Permute the rows of X and y
-rp = randperm(n);
+s = RandStream('dsfmt19937');
+rp = randperm(s, n);
 y = y(rp);
 X = X(rp,:);
 
