@@ -508,8 +508,8 @@ class PBDL(convex_regression):
 
     mul_T = 1
     while True:
-      for _ in tqdm(range(n_iter), desc='ADMM iterations', leave = False):
-      # for _ in range(n_iter):
+      # for _ in tqdm(range(n_iter), desc='ADMM iterations', leave = False):
+      for _ in range(n_iter):
         #   1st block primals
         zeta = self.zeta_update(rho, tau, iota, s, t)
         theta = self.theta_update(X, p, eta, alpha, s)
