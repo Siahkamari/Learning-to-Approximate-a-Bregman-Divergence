@@ -1,4 +1,4 @@
-# Piecewise Linear Regression via a Difference of Convex Functions
+# Learning to Approximate a Bregman Divergence
 
 ## Choose Your Destinty! Matlab or Python
 
