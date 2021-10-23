@@ -130,12 +130,12 @@ class tuner:
       score_train[i] = self.score(X[I_train], y[I_train])
       L[i] = th.sum(self.L)
 
-#     print("lanbda = ", "{:.2e}".format(float(self.lanbda)), 
-#     ", n_iter =", int(th.mean(n_iter)),
-#     ", training score = ", "{:.3f}".format(th.mean(score_train)),
-#     ", validation score = ", "{:.3f}".format(th.mean(score_val)),
-#     # ", L = ","{:.3e}".format(th.mean(L)),
-#     )
+    print("lanbda = ", "{:.2e}".format(float(self.lanbda)), 
+    ", n_iter =", int(th.mean(n_iter)),
+    ", training score = ", "{:.3f}".format(th.mean(score_train)),
+    ", validation score = ", "{:.3f}".format(th.mean(score_val)),
+    # ", L = ","{:.3e}".format(th.mean(L)),
+    )
 
     return th.mean(score_val), int(th.mean(n_iter))
   
